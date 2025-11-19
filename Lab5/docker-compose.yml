@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  # Cliente 1: Ubuntu 16.10
+  c1:
+    build: ./c1
+    container_name: C1
+    hostname: C1
+    networks:
+      - ssh-net
+    # Mantiene el contenedor encendido sin hacer nada
+    command: tail -f /dev/null 
+
+  # Cliente 2: Ubuntu 18.10
+  c2:
+    build: ./c2
+    container_name: C2
+    hostname: C2
+    networks:
+      - ssh-net
+    command: tail -f /dev/null
+
+  # Cliente 3: Ubuntu 20.10
+  c3:
+    build: ./c3
+    container_name: C3
+    hostname: C3
+    networks:
+      - ssh-net
+    command: tail -f /dev/null
+
+  # Servidor S1 (que también es C4): Ubuntu 22.10
+  s1:
+    build: ./s1
+    container_name: S1
+    hostname: S1
+    networks:
+      - ssh-net
+    # Inicia el servicio SSH en primer plano
+    command: /usr/sbin/sshd -D
+
+networks:
+  ssh-net:
+    driver: bridge
